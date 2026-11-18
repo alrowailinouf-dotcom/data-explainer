@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ما هي البيانات؟</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b1a;--fg:#eef2ff;--mut:#aab4d8;--a:#5eead4;--b:#a78bfa;--c:#f472b6;--glass:rgba(255,255,255,.06);--line:rgba(255,255,255,.14);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--bg);color:var(--fg);font-family:'Tajawal',system-ui,sans-serif}
+#cv{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+#bar{position:fixed;top:0;inset-inline:0;height:4px;z-index:5;background:rgba(255,255,255,.08)}
+#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--a),var(--b),var(--c));transition:width .6s ease}
+#stage{position:absolute;inset:0;perspective:1400px;z-index:1}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(18px,5vh,56px) clamp(18px,7vw,110px) 90px;opacity:0;pointer-events:none;transform:translateZ(-500px) rotateY(28deg);transition:opacity .7s ease,transform .9s cubic-bezier(.2,.8,.2,1);overflow-y:auto}
+.slide.prev{transform:translateZ(-500px) rotateY(-28deg)}
+.slide.on{opacity:1;pointer-events:auto;transform:none}
+.slide>*{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+.slide.on>*{opacity:1;transform:none}
+.slide.on>*:nth-child(2){transition-delay:.15s}.slide.on>*:nth-child(3){transition-delay:.3s}.slide.on>*:nth-child(4){transition-delay:.45s}
+.tag{color:var(--a);font-weight:700;letter-spacing:.04em;margin:0 0 6px;font-size:clamp(13px,1.6vw,18px)}
+h1{font-size:clamp(40px,8vw,96px);font-weight:800;margin:0 0 14px;line-height:1.15;background:linear-gradient(90deg,var(--a),var(--b),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(28px,4.6vw,56px);font-weight:800;margin:0 0 10px;line-height:1.2}
+.lead{font-size:clamp(16px,2vw,24px);color:var(--mut);line-height:1.9;max-width:900px;margin:0 0 22px}
+.grid{display:grid;gap:clamp(10px,1.6vw,20px);grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:20px;padding:clamp(14px,2vw,24px);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .2s ease,border-color .3s,background .3s;transform-style:preserve-3d;will-change:transform}
+.card:hover{border-color:var(--a);background:rgba(255,255,255,.1)}
+.card .ic{font-size:34px;display:block;margin-bottom:6px;transform:translateZ(40px)}
+.card h3{margin:0 0 6px;font-size:clamp(18px,2.2vw,26px);color:var(--fg);transform:translateZ(25px)}
+.card p{margin:0;color:var(--mut);line-height:1.8;font-size:clamp(14px,1.5vw,18px)}
+.card small{display:block;margin-top:10px;color:var(--a);font-size:clamp(12px,1.3vw,15px)}
+.pick{cursor:pointer;user-select:none}
+.pick.act{border-color:var(--b);background:rgba(167,139,250,.18);box-shadow:0 0 30px rgba(167,139,250,.3)}
+.detail{white-space:pre-line;margin-top:18px;padding:18px 22px;border-radius:18px;border:1px dashed var(--line);color:var(--fg);font-size:clamp(15px,1.8vw,21px);line-height:1.9;min-height:96px;background:rgba(0,0,0,.25)}
+.flow{display:flex;gap:12px;align-items:stretch;flex-wrap:wrap}
+.flow .card{flex:1 1 200px;text-align:center}
+.arr{align-self:center;font-size:30px;color:var(--a)}
+.num{font-size:clamp(32px,4vw,52px);font-weight:800;color:var(--b);display:block;transform:translateZ(40px)}
+.pts{display:grid;gap:14px}
+.pts .card{display:flex;gap:16px;align-items:center}
+.pts .card p{color:var(--fg);font-size:clamp(17px,2.2vw,26px);font-weight:500}
+.btn{margin-top:22px;align-self:flex-start;font:inherit;font-weight:700;color:#071018;background:linear-gradient(90deg,var(--a),var(--b));border:0;border-radius:999px;padding:12px 28px;cursor:pointer}
+#nav{position:fixed;bottom:0;inset-inline:0;z-index:5;display:flex;justify-content:center;align-items:center;gap:14px;padding:12px 12px calc(14px + env(safe-area-inset-bottom,0px))}
+#nav button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--fg);font-size:20px;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#dots{display:flex;gap:8px}
+#dots b{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:.3s}
+#dots b.on{width:30px;border-radius:6px;background:var(--a)}
+@media (prefers-reduced-motion:reduce){.slide,.slide>*{transition-duration:.01s}}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="bar"><i></i></div>
+<div id="stage">
+
+<section class="slide on">
+<p class="tag">مقدمة</p>
+<h1>ما هي البيانات؟</h1>
+<p class="lead">البيانات هي مجموعة من الحقائق والمعلومات يتم جمعها ومعالجتها بهدف الوصول إلى نتائج والاستفادة منها. قد تكون أرقامًا أو نصوصًا أو صورًا أو أصواتًا، وهي المادة الخام التي تقوم عليها قراراتنا في الحياة والعمل.</p>
+<p class="lead" style="margin:0">كل نقرة، وكل عملية شراء، وكل تسجيل دخول ينتج عنه بيانات جديدة. اسحب أو استخدم الأسهم للتنقل ←</p>
+</section>
+
+<section class="slide">
+<p class="tag">01 · التصنيف</p>
+<h2>أنواع البيانات</h2>
+<p class="lead">تختلف البيانات بحسب المجال الذي تنتمي إليه، وكل نوع له أهميته وحساسيته الخاصة.</p>
+<div class="grid">
+<div class="card" data-t><span class="ic">🌐</span><h3>بيانات رقمية</h3><p>كل ما نتركه خلفنا على الإنترنت والتطبيقات من نشاط وتفضيلات وسجل تصفح.</p><small>مثال: سجل البحث، الإعجابات، الموقع</small></div>
+<div class="card" data-t><span class="ic">🩺</span><h3>بيانات صحية</h3><p>السجلات الطبية ونتائج الفحوصات والتحاليل، وهي من أكثر البيانات حساسية.</p><small>مثال: التشخيص، الوصفات، الأشعة</small></div>
+<div class="card" data-t><span class="ic">💳</span><h3>بيانات مالية</h3><p>الحسابات البنكية والمشتريات والمعاملات التي تعكس سلوكنا المالي.</p><small>مثال: كشف الحساب، فواتير الشراء</small></div>
+<div class="card" data-t><span class="ic">🪪</span><h3>بيانات شخصية</h3><p>المعلومات التي تعرّف بالشخص وتميّزه عن غيره من الأفراد.</p><small>مثال: الاسم، رقم الهاتف، تاريخ الميلاد</small></div>
+</div>
+</section>
+
+<section class="slide">
+<p class="tag">02 · المصادر</p>
+<h2>من أين نحصل على البيانات؟</h2>
+<p class="lead">مصادر رئيسية للبيانات تحيط بنا في كل لحظة، بعضها نقدمه بأنفسنا وبعضها يُجمع تلقائيًا.</p>
+<div class="grid">
+<div class="card" data-t><span class="num">1</span><h3>الهواتف الذكية والتطبيقات</h3><p>تسجّل الموقع ووقت الاستخدام والاهتمامات.</p></div>
+<div class="card" data-t><span class="num">2</span><h3>المواقع الإلكترونية</h3><p>تتبع الزيارات والصفحات التي نتصفحها وما نبحث عنه.</p></div>
+<div class="card" data-t><span class="num">3</span><h3>الاستبيانات والنماذج</h3><p>بيانات نقدمها بإرادتنا عند تعبئة نموذج أو إبداء رأي.</p></div>
+<div class="card" data-t><span class="num">4</span><h3>المعاملات اليومية</h3><p>الشراء والدفع والتحويل وكل عملية تترك أثرًا مسجلًا.</p></div>
+<div class="card" data-t><span class="num">5</span><h3>الأجهزة الذكية</h3><p>الساعات والمستشعرات والمنازل الذكية تقيس وترسل بيانات باستمرار.</p></div>
+</div>
+</section>
+
+<section class="slide">
+<p class="tag">03 · من واقعنا</p>
+<h2>أمثلة من حياتنا اليومية</h2>
+<p class="lead">نتعامل مع البيانات يوميًا دون أن ننتبه، وهذه ثلاثة أمثلة قريبة منا.</p>
+<div class="grid">
+<div class="card" data-t><span class="ic">🗺️</span><h3>تطبيقات الخرائط</h3><p>تستخدم الموقع الجغرافي والوجهات لتحديد أسرع طريق وتقدير وقت الوصول وتنبيهنا بالازدحام.</p></div>
+<div class="card" data-t><span class="ic">🛒</span><h3>التسوق الإلكتروني</h3><p>يسجّل المنتجات التي نبحث عنها ونشتريها، ثم يقترح علينا ما يناسب اهتماماتنا.</p></div>
+<div class="card" data-t><span class="ic">🎓</span><h3>الجامعة</h3><p>تسجّل الدرجات والحضور والمعلومات الأكاديمية لمتابعة تقدم الطالب ومستواه.</p></div>
+</div>
+</section>
+
+<section class="slide">
+<p class="tag">04 · المفهوم</p>
+<h2>ماذا نعني بقيمة البيانات؟</h2>
+<p class="lead">قيمة البيانات هي الفائدة التي نحصل عليها عند استخدامها وتحليلها وتحويلها إلى معلومات تساعدنا في اتخاذ القرارات وتحقيق الأهداف. اضغط على كل مرحلة لتعرف أكثر.</p>
+<div class="flow" data-pick>
+<div class="card pick act" data-d="البيانات في صورتها الخام: أرقام وحقائق متفرقة لا معنى لها وحدها، مثل قائمة بمبيعات يوم كامل."><span class="ic">🧩</span><h3>بيانات</h3></div>
+<span class="arr">◀</span>
+<div class="card pick" data-d="بعد التنظيم والتحليل تتحول إلى معلومات ذات معنى، مثل معرفة أن مبيعات يوم الخميس هي الأعلى."><span class="ic">💡</span><h3>معلومات</h3></div>
+<span class="arr">◀</span>
+<div class="card pick" data-d="عندما نستفيد من المعلومات نتخذ قرارات أفضل ونحقق أهدافنا، مثل زيادة المخزون قبل يوم الخميس."><span class="ic">🎯</span><h3>قرارات وأهداف</h3></div>
+</div>
+<div class="detail">البيانات في صورتها الخام: أرقام وحقائق متفرقة لا معنى لها وحدها، مثل قائمة بمبيعات يوم كامل.</div>
+</section>
+
+<section class="slide">
+<p class="tag">05 · الخطوات</p>
+<h2>كيف تصبح البيانات ذات قيمة؟</h2>
+<p class="lead">لا تكتسب البيانات قيمتها من تلقاء نفسها، بل تمر بأربع مراحل متتابعة. اضغط على أي مرحلة.</p>
+<div class="grid" data-pick>
+<div class="card pick act" data-d="نحدد ما نحتاجه ثم نجمعه من مصادره الموثوقة مثل الاستبيانات والتطبيقات والمعاملات."><span class="num">1</span><h3>جمع البيانات</h3></div>
+<div class="card pick" data-d="نرتب البيانات ونصنفها وننظفها من الأخطاء والتكرار حتى تصبح جاهزة للاستخدام."><span class="num">2</span><h3>تنظيم البيانات</h3></div>
+<div class="card pick" data-d="نبحث عن الأنماط والعلاقات والاتجاهات باستخدام الجداول والرسوم والأدوات الإحصائية."><span class="num">3</span><h3>تحليل البيانات</h3></div>
+<div class="card pick" data-d="نستخرج النتائج ونستفيد منها في اتخاذ قرار أو حل مشكلة أو تطوير خدمة."><span class="num">4</span><h3>استخراج النتائج</h3></div>
+</div>
+<div class="detail">نحدد ما نحتاجه ثم نجمعه من مصادره الموثوقة مثل الاستبيانات والتطبيقات والمعاملات.</div>
+</section>
+
+<section class="slide">
+<p class="tag">06 · التطبيق</p>
+<h2>أمثلة على قيمة البيانات</h2>
+<p class="lead">في كل مجال، البيانات المحللة تصنع فرقًا حقيقيًا في جودة القرار.</p>
+<div class="grid">
+<div class="card" data-t><span class="ic">🏪</span><h3>المتاجر</h3><p>معرفة المنتجات الأكثر طلبًا لتوفيرها في الوقت المناسب وتقليل الخسائر.</p></div>
+<div class="card" data-t><span class="ic">🏫</span><h3>الجامعات</h3><p>معرفة مستوى أداء الطلاب لدعم المتعثرين وتطوير المناهج وطرق التدريس.</p></div>
+<div class="card" data-t><span class="ic">🏥</span><h3>المستشفيات</h3><p>تحسين الخدمات الصحية وتقليل أوقات الانتظار والتنبؤ بالاحتياجات.</p></div>
+<div class="card" data-t><span class="ic">🏢</span><h3>الشركات</h3><p>فهم احتياجات العملاء لتطوير منتجات وخدمات تناسبهم وزيادة رضاهم.</p></div>
+</div>
+</section>
+
+<section class="slide">
+<p class="tag">الخلاصة</p>
+<h2>الخلاصة</h2>
+<div class="pts">
+<div class="card" data-t><span class="num">1</span><p>البيانات حقائق ومعلومات تُجمع وتُعالج.</p></div>
+<div class="card" data-t><span class="num">2</span><p>قيمتها في تحليلها وتحويلها إلى معلومات.</p></div>
+<div class="card" data-t><span class="num">3</span><p>هدفها قرارات أفضل وتحقيق الأهداف.</p></div>
+</div>
+<button class="btn" id="again">↺ العودة للبداية</button>
+</section>
+
+</div>
+<div id="nav"><button id="nx" aria-label="التالي">→</button><div id="dots"></div><button id="pv" aria-label="السابق">←</button></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const S=[...document.querySelectorAll('.slide')],D=document.getElementById('dots'),B=document.querySelector('#bar i');
+let i=0;
+const cols=['#5eead4','#a78bfa','#f472b6','#60a5fa','#fbbf24','#34d399','#fb7185','#5eead4'];
+S.forEach((_,k)=>{const d=document.createElement('b');d.onclick=()=>go(k);D.appendChild(d)});
+function go(n){n=Math.max(0,Math.min(S.length-1,n));i=n;
+S.forEach((s,k)=>{s.classList.toggle('on',k===n);s.classList.toggle('prev',k<n)});
+[...D.children].forEach((d,k)=>d.classList.toggle('on',k===n));
+B.style.width=((n+1)/S.length*100)+'%';tgt.set(cols[n]);}
+document.getElementById('nx').onclick=()=>go(i+1);
+document.getElementById('pv').onclick=()=>go(i-1);
+document.getElementById('again').onclick=()=>go(0);
+addEventListener('keydown',e=>{if(['ArrowLeft','PageDown',' '].includes(e.key))go(i+1);if(['ArrowRight','PageUp'].includes(e.key))go(i-1)});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60)go(d<0?i+1:i-1)},{passive:true});
+[1,2,3,6].forEach(n=>{const gr=S[n].querySelector('.grid');if(!gr)return;gr.dataset.pick='';
+gr.querySelectorAll('.card').forEach((c,k)=>{const p=c.querySelector('p'),s=c.querySelector('small');c.dataset.d=(p?p.textContent:'')+(s?'\n'+s.textContent:'');p&&p.remove();s&&s.remove();c.classList.add('pick');if(!k)c.classList.add('act')});
+const d=document.createElement('div');d.className='detail';d.textContent=gr.firstElementChild.dataset.d;gr.after(d);
+const l=S[n].querySelector('.lead');if(l)l.textContent+=' اضغط على أي بطاقة لعرض التفاصيل.'});
+document.querySelectorAll('[data-pick]').forEach(w=>{const box=w.nextElementSibling;
+w.querySelectorAll('.pick').forEach(p=>p.onclick=()=>{w.querySelectorAll('.pick').forEach(q=>q.classList.remove('act'));p.classList.add('act');box.textContent=p.dataset.d;box.scrollIntoView({block:'nearest',behavior:'smooth'})})});
+document.querySelectorAll('.card:not(.pick)').forEach(c=>{
+c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(700px) rotateY(${x*16}deg) rotateX(${-y*16}deg) translateZ(10px)`});
+c.addEventListener('mouseleave',()=>c.style.transform='')});
+document.querySelectorAll('.pick').forEach(c=>{
+c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(700px) rotateY(${x*14}deg) rotateX(${-y*14}deg)`});
+c.addEventListener('mouseleave',()=>c.style.transform='')});
+
+const tgt=new THREE.Color(cols[0]);
+try{
+const cv=document.getElementById('cv'),R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+R.setPixelRatio(Math.min(devicePixelRatio,2));
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(60,1,.1,100);cam.position.z=10;
+const g=new THREE.Group();sc.add(g);
+const P=[];for(let k=0;k<240;k++){const r=3+Math.random()*3.2,t=Math.random()*6.283,p=Math.acos(2*Math.random()-1);P.push(new THREE.Vector3(r*Math.sin(p)*Math.cos(t),r*Math.sin(p)*Math.sin(t),r*Math.cos(p)))}
+const pm=new THREE.PointsMaterial({size:.09,color:cols[0],transparent:true,opacity:.9});
+g.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(P),pm));
+const L=[];for(let a=0;a<P.length;a++)for(let b=a+1;b<P.length;b++)if(P[a].distanceTo(P[b])<1.5)L.push(P[a],P[b]);
+const lm=new THREE.LineBasicMaterial({color:cols[0],transparent:true,opacity:.22});
+g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(L),lm));
+const cm=new THREE.MeshBasicMaterial({color:cols[0],wireframe:true,transparent:true,opacity:.5});
+const core=new THREE.Mesh(new THREE.IcosahedronGeometry(1.7,1),cm);g.add(core);
+let mx=0,my=0;addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+function rs(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+addEventListener('resize',rs);rs();
+(function loop(){requestAnimationFrame(loop);
+g.rotation.y+=.0025;core.rotation.x+=.006;core.rotation.z+=.004;
+g.rotation.x+=(i*.12-g.rotation.x)*.03;
+const sx=innerWidth>700?(i%2?-3:3):0;g.position.x+=(sx-g.position.x)*.04;
+const sc2=1+(i%3)*.08;g.scale.setScalar(g.scale.x+(sc2-g.scale.x)*.04);
+cam.position.x+=(mx*2-cam.position.x)*.05;cam.position.y+=(-my*2-cam.position.y)*.05;cam.lookAt(0,0,0);
+pm.color.lerp(tgt,.05);lm.color.lerp(tgt,.05);cm.color.lerp(tgt,.05);
+R.render(sc,cam)})();
+}catch(e){document.getElementById('cv').style.background='radial-gradient(circle at 70% 30%,#1b2250,#070b1a)'}
+go(0);
+</script>
+</body>
+</html>
